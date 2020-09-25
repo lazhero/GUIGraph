@@ -19,6 +19,7 @@ public:
     void setRadius(int rad);
     void addEdge(int a,int b,int value);
     void setSize(int x,int y);
+    //void replace();
 protected:
     void paintEvent(QPaintEvent* event);
 private:

@@ -6,7 +6,7 @@
 #include<QPaintEvent>
 #include<Graph.h>
 #include<QLineEdit>
-
+class QLocalSocket;
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -28,9 +28,16 @@ private slots:
 
     void on_AddNode_clicked();
 
+    void on_JoinButton_clicked();
+
 private:
     Graph * graph;
     Ui::MainWindow *ui;
+    QLocalSocket* socket;
     QString getLineEditText(QLineEdit* lineEdit);
+    void addNode();
+    void addRelationShip();
+    void showM(QString message);
+
 };
 #endif // MAINWINDOW_H

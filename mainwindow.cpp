@@ -1,6 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include<iostream>
+#include<QLocalSocket>
+#include<QTextStream>
+#include<QMessageBox>
+#define separator '#'
+DoubleList<int> *LastInfo=nullptr;
+int a=0;
+int b=0;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -9,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     graph=new Graph(ui->GraphCointainer);
+    socket=new QLocalSocket(this);
+    graph->setRadius(10);
+    ///socket->connectToServer("VIOLADOR");
 
 }
 
@@ -28,21 +38,88 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
 void MainWindow::on_AddEdge_clicked()
 {
+    QString Start=getLineEditText(ui->EdgeStartInput);
+    QString End=getLineEditText(ui->EdgeStopInput);
+    QString value=getLineEditText(ui->EdgeValueInput);
+    int from=Start.toInt();
+    int to=End.toInt();
+    int price=value.toInt();
+    QTextStream T(socket);
+    T<<1<<separator<<from<<separator<<to<<separator<<price<<separator;
+   socket->flush();
+   if(LastInfo!=nullptr)free(nullptr);
+   LastInfo=new DoubleList<int>;
+   LastInfo->add(from);
+   LastInfo->add(to);
+   LastInfo->add(price);
+
 
 }
 
 void MainWindow::on_getRoute_clicked()
 {
+    QString Start=getLineEditText(ui->FloydStartInput);
+    QString End=getLineEditText(ui->FloydStopInput);
+    int from=Start.toUInt();
+    int to=End.toInt();
+    QTextStream T(socket);
+    T<<"2"<<separator<<from<<separator<<to<<separator;
+    socket->flush();
 
 }
 
 void MainWindow::on_AddNode_clicked()
 
 {
-
-    graph->addNode(12,33);
-    graph->update();
-}
+    QTextStream T(socket);
+    T<<"0#";
+    socket->flush();
+  }
 QString MainWindow::getLineEditText(QLineEdit* lineEdit){
     return lineEdit->text() ;
+}
+
+void MainWindow::on_JoinButton_clicked()
+{
+    QString name=ui->serverName->text();
+    socket->connectToServer(name);
+    ui->JoinButton->setDisabled(true);
+    connect(socket,&QLocalSocket::readyRead,[&]{
+         QString string=socket->readAll();
+         std::string value=string.toStdString();
+         int condition=string.toInt();
+         switch (condition) {
+            case 0:
+             addNode();
+             break;
+         case 1:
+             addRelationShip();
+             break;
+         case -1:
+
+         default:
+             showM(string);
+             break;
+         }
+
+
+     });
+}
+void MainWindow::addNode(){
+    std::cout<<"Llegue a la respuesta de la vida"<<std::endl;
+    graph->addNode(20+a,33+b);
+    a+=50;
+    b+=50;
+    graph->update();
+}
+
+void MainWindow::addRelationShip()
+{
+    graph->addEdge(*LastInfo->get(0),*LastInfo->get(1),*LastInfo->get(2));
+    graph->update();
+}
+
+void MainWindow::showM(QString message)
+{
+    QMessageBox::information(this,"",message);
 }
