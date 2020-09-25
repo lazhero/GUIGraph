@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include<QPainter>
 #include<QPaintEvent>
-#include<Graph.h>
+//#include<Graph.h>
+#include"coordalgo.h"
 #include<QLineEdit>
 class QLocalSocket;
 QT_BEGIN_NAMESPACE

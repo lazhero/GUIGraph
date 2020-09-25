@@ -76,3 +76,14 @@ void Graph::setSize(int x, int y){
     if(y>0)*Ylen=*new int(y);
     resize(*Xlen,*Ylen);
 }
+
+void Graph::setPoints(DoubleList<QPoint> *points)
+{
+    free(Points);
+    Points=points;
+}
+
+int Graph::getNodesNumber()
+{
+    return Points->getLen();
+}

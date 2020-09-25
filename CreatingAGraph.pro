@@ -12,6 +12,7 @@ SOURCES += \
     Graph.cpp \
     GraphAlgo/FloydWAlgo.cpp \
     GraphAlgo/FloydWResponse.cpp \
+    coordalgo.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -22,6 +23,7 @@ HEADERS += \
     Graph/DirectedGraph.hpp \
     GraphAlgo/FloydWAlgo.h \
     GraphAlgo/FloydWResponse.h \
+    coordalgo.h \
     mainwindow.h
 
 FORMS += \

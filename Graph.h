@@ -19,7 +19,8 @@ public:
     void setRadius(int rad);
     void addEdge(int a,int b,int value);
     void setSize(int x,int y);
-    //void replace();
+    void setPoints(DoubleList<QPoint>* points);
+    int getNodesNumber();
 protected:
     void paintEvent(QPaintEvent* event);
 private:

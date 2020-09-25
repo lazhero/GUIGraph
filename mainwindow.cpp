@@ -8,6 +8,7 @@
 DoubleList<int> *LastInfo=nullptr;
 int a=0;
 int b=0;
+int radius;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,8 +18,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     graph=new Graph(ui->GraphCointainer);
     socket=new QLocalSocket(this);
-    graph->setRadius(10);
-    ///socket->connectToServer("VIOLADOR");
+    radius=20;
+    graph->setRadius(radius);
+    //a=parent->geometry().height()/2;
+    //b=parent->geometry().width()/2;
+    a=200;
+    b=200;
 
 }
 
@@ -87,6 +92,11 @@ void MainWindow::on_JoinButton_clicked()
     connect(socket,&QLocalSocket::readyRead,[&]{
          QString string=socket->readAll();
          std::string value=string.toStdString();
+         std::cout<<"El valor recibido es "<<value<<std::endl;
+         if(value.length()>2){
+             showM(string);
+             return ;
+         }
          int condition=string.toInt();
          switch (condition) {
             case 0:
@@ -95,8 +105,6 @@ void MainWindow::on_JoinButton_clicked()
          case 1:
              addRelationShip();
              break;
-         case -1:
-
          default:
              showM(string);
              break;
@@ -105,12 +113,21 @@ void MainWindow::on_JoinButton_clicked()
 
      });
 }
-void MainWindow::addNode(){
-    std::cout<<"Llegue a la respuesta de la vida"<<std::endl;
-    graph->addNode(20+a,33+b);
-    a+=50;
-    b+=50;
+void MainWindow::addNode(){    std::cout<<"Llegue a la respuesta de la vida"<<std::endl;
+
+    int x;
+    int y ;
+     x = rand()%700+20;
+     y = rand()%220+40;
+    DoubleList<int> pos;
+     graph->addNode(x,y);
     graph->update();
+
+   // graph->addNode(a,b);
+    //int graphNumber=graph->getNodesNumber();
+   // DoubleList<QPoint> *points=getCirlePoints(radius*graphNumber,graphNumber,a,b);
+   // graph->setPoints(points);
+     //graph->update();
 }
 
 void MainWindow::addRelationShip()
