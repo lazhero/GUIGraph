@@ -63,7 +63,7 @@ void Graph::addEdge(int a, int b, int value){
     x=(xDif/2)+start;
     y=m*x+bs;
     stringPoint->add(*new QPoint(x,y));
-    stringValues->add(*new int(value));
+   stringValues->add(*new int(value));
 
 
 

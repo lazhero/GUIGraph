@@ -132,8 +132,14 @@ void MainWindow::addNode(){    std::cout<<"Llegue a la respuesta de la vida"<<st
 
 void MainWindow::addRelationShip()
 {
-    graph->addEdge(*LastInfo->get(0),*LastInfo->get(1),*LastInfo->get(2));
+    int source=*LastInfo->get(0);
+    int to=*LastInfo->get(1);
+    int value=*LastInfo->get(2);
+    graph->addEdge(source,to,value);
     graph->update();
+    //free(LastInfo);
+    //LastInfo=nullptr;
+    return;
 }
 
 void MainWindow::showM(QString message)
